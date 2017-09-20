@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -62,16 +63,20 @@ public class TextRemover{
         for (FileReader in : arrayDeTextos){
             BufferedReader reader = new BufferedReader(in);
             String linha; 
+            HashSet<String> set = new HashSet<String>();
             File arquivoFinal = new File("C:/Users/Pichau/Desktop/PDFs/worddict.txt");
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoFinal));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoFinal, true));
                 writer.append("\n");
                 while((linha = reader.readLine()) != null){
                   String[] palavraNova = linha.split(" ");
                   for(int i = 0; i < palavraNova.length; i++){
                       String string = palavraNova[i];
-                      writer.write(string + "\n");
+                      set.add(string);
                   }
+                }
+                for(String string : set){
+                    writer.write(string + "\n");
                 }
                 
             } catch (Exception ex) {
