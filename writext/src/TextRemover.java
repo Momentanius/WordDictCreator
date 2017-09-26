@@ -24,7 +24,7 @@ public class TextRemover{
             String a = listaDeCaminhos.get(i);
             System.out.println("Caminho:" + a);
         }
-        lerArquivo(listaDeCaminhos);
+        escreverTxtGrandao(listaDeCaminhos);
         
     }
         
@@ -37,7 +37,7 @@ public class TextRemover{
         
         for(File arquivo: listaDeArquivos){
             if (arquivo.isFile()){
-                System.out.println(arquivo.getName());
+                //System.out.println(arquivo.getName());
                 array.add(arquivo.getAbsolutePath());
             }else if(arquivo.isDirectory()){
                 listarArquivos(arquivo.getAbsolutePath(), array);
@@ -87,6 +87,65 @@ public class TextRemover{
             } 
         }
 
+    
+    
+     public void escreverTxtGrandao(ArrayList<String> listaDeCaminhos) throws IOException{
+        
+        
+        ArrayList<FileReader> arrayDeTextos = new ArrayList<FileReader>();
+        ArrayList<String> arrayDeStrings = new ArrayList<String>();
+        
+        for(String caminho : listaDeCaminhos){
+           try{
+           FileReader in = new FileReader(caminho);
+           arrayDeTextos.add(in);
+           }catch(IOException exc){
+               exc.printStackTrace();
+           }
+        }
+        File arquivoFinal = new File("C:/Users/Pichau/Desktop/textao.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoFinal, true));
+        for (FileReader in : arrayDeTextos){
+            BufferedReader reader = new BufferedReader(in);
+            String linha; 
+            
+            try {
+                
+                while((linha = reader.readLine()) != null){
+                    arrayDeStrings.add(linha);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            
+                
+            } 
+        
+        
+         try {
+             for(String string: arrayDeStrings){
+                    writer.write(string);
+                    writer.write("\n");
+                }
+             
+         } catch (Exception e) {
+         }
+               
+        
+        
+        }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         
         
     }
