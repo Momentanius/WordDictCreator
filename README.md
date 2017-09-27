@@ -1,2 +1,3 @@
 # WordDictCreator
-Um criador de WordDicts pro meu TTC.
+
+A small tool used in the creation of the worddict/txt dataset files for the NBOW2.
