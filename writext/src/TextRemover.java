@@ -22,11 +22,14 @@ public class TextRemover{
         ArrayList<String> listaDeCaminhos = new ArrayList<String>();
         ArrayList<String> arrayDiretorios = new ArrayList<String>();
         listarArquivos("C:/Users/Pichau/Desktop/PDFs", listaDeCaminhos, arrayDiretorios);
-        String diretorioNome;
         for(int i = 0; i < listaDeCaminhos.size(); i++){
             String a = listaDeCaminhos.get(i);
         }
         
+        System.out.println("Tamanho da Lista de Caminhos: " + listaDeCaminhos.size());
+        System.out.println("Tamanho da Lista de Diretórios:" + arrayDiretorios.size());
+               
+               
         escreverTxtGrandao(listaDeCaminhos, arrayDiretorios);
         System.out.println("Terminou!");
         
@@ -110,30 +113,33 @@ public class TextRemover{
                System.out.println(path);
            }
         }
-        File finalFile = new File("C:/Users/Pichau/Desktop/textao.txt");
+        File finalFile = new File("C:/Users/Pichau/Desktop/texto.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(finalFile, true));
         for (FileReader in : textArray){
             BufferedReader reader = new BufferedReader(in);
-            String line;          
+            String line;
+            StringBuilder builder = new StringBuilder();
             try {
                 while((line = reader.readLine()) != null){
-                    stringArray.add(line);
+                  builder.append(line);
                 }
+                stringArray.add(builder.toString());
             } catch (Exception ex) {
                 ex.printStackTrace();
-            }
-            
-                
-            } 
-        
-        
+            }                
+            }         
          try {
-             for(int i = 0; i < stringArray.size(); i++){
+             int i = 0;
+             System.out.println("StringArray: " + stringArray.size());
+             System.out.println("diretorio:" + diretorio.size());
+                    
+             while(i < stringArray.size()){
                     String string = stringArray.get(i);
                     String dir = diretorio.get(i);
                     writer.write(dir + "\t" + string);
                     writer.write("\n");
-                }
+                    i++;
+             }
              
          } catch (Exception e) {
              e.printStackTrace();

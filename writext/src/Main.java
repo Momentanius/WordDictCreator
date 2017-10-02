@@ -18,6 +18,7 @@ public class Main {
             TextRemover textRemover = new TextRemover();
         }catch(IOException exception){
             exception.printStackTrace();
+            System.out.println(exception.toString());
         }
         
         
