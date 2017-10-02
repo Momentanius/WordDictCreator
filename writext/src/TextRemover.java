@@ -15,32 +15,37 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class TextRemover{ 
+    
+    
 
     public TextRemover() throws IOException {
         ArrayList<String> listaDeCaminhos = new ArrayList<String>();
-        listarArquivos("C:/Users/Pichau/Desktop/PDFs", listaDeCaminhos);
-        
+        ArrayList<String> arrayDiretorios = new ArrayList<String>();
+        listarArquivos("C:/Users/Pichau/Desktop/PDFs", listaDeCaminhos, arrayDiretorios);
+        String diretorioNome;
         for(int i = 0; i < listaDeCaminhos.size(); i++){
             String a = listaDeCaminhos.get(i);
-            System.out.println("Caminho:" + a);
         }
-        escreverTxtGrandao(listaDeCaminhos);
+        
+        escreverTxtGrandao(listaDeCaminhos, arrayDiretorios);
+        System.out.println("Terminou!");
         
     }
         
         
-    public void listarArquivos(String caminho, ArrayList<String> array){
+    public void listarArquivos(String caminho, ArrayList<String> array, ArrayList<String> arrayDiretorios){
         
         
         File pasta = new File(caminho);
         File[] listaDeArquivos = pasta.listFiles();
-        
+        String diretorio;
         for(File arquivo: listaDeArquivos){
             if (arquivo.isFile()){
-                //System.out.println(arquivo.getName());
+                diretorio = arquivo.getParentFile().getName();
                 array.add(arquivo.getAbsolutePath());
+                arrayDiretorios.add(diretorio);
             }else if(arquivo.isDirectory()){
-                listarArquivos(arquivo.getAbsolutePath(), array);
+                listarArquivos(arquivo.getAbsolutePath(), array, arrayDiretorios);
             }
         }        
 
@@ -89,30 +94,30 @@ public class TextRemover{
 
     
     
-     public void escreverTxtGrandao(ArrayList<String> listaDeCaminhos) throws IOException{
+     public void escreverTxtGrandao(ArrayList<String> pathlist, ArrayList<String> diretorio) throws IOException{
         
         
-        ArrayList<FileReader> arrayDeTextos = new ArrayList<FileReader>();
-        ArrayList<String> arrayDeStrings = new ArrayList<String>();
+        ArrayList<FileReader> textArray = new ArrayList<FileReader>();
+        ArrayList<String> stringArray = new ArrayList<String>();
         
-        for(String caminho : listaDeCaminhos){
+        for(String path : pathlist){
            try{
-           FileReader in = new FileReader(caminho);
-           arrayDeTextos.add(in);
+           FileReader in = new FileReader(path);
+           textArray.add(in);
            }catch(IOException exc){
+               System.out.println("Caminho errado: " + path);
                exc.printStackTrace();
+               System.out.println(path);
            }
         }
-        File arquivoFinal = new File("C:/Users/Pichau/Desktop/textao.txt");
-        BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoFinal, true));
-        for (FileReader in : arrayDeTextos){
+        File finalFile = new File("C:/Users/Pichau/Desktop/textao.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(finalFile, true));
+        for (FileReader in : textArray){
             BufferedReader reader = new BufferedReader(in);
-            String linha; 
-            
+            String line;          
             try {
-                
-                while((linha = reader.readLine()) != null){
-                    arrayDeStrings.add(linha);
+                while((line = reader.readLine()) != null){
+                    stringArray.add(line);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -123,12 +128,16 @@ public class TextRemover{
         
         
          try {
-             for(String string: arrayDeStrings){
-                    writer.write(string);
+             for(int i = 0; i < stringArray.size(); i++){
+                    String string = stringArray.get(i);
+                    String dir = diretorio.get(i);
+                    writer.write(dir + "\t" + string);
                     writer.write("\n");
                 }
              
          } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("FUCK!");
          }
                
         
